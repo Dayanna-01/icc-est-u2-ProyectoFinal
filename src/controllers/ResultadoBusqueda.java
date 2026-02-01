@@ -23,17 +23,35 @@ public class ResultadoBusqueda {
         return ruta;
     }
 
+    public void setRuta(List<Nodo> ruta) {
+        this.ruta = ruta;
+    }
+
     public List<Nodo> getVisitados() {
         return visitados;
+    }
+
+    public void setVisitados(List<Nodo> visitados) {
+        this.visitados = visitados;
     }
 
     public long getTiempo() {
         return tiempo;
     }
 
+    public void setTiempo(long tiempo) {
+        this.tiempo = tiempo;
+    }
+
     public ModoVisualizacion getModo() {
         return modo;
     }
+
+    public void setModo(ModoVisualizacion modo) {
+        this.modo = modo;
+    }
+
+    
     
 
 }
