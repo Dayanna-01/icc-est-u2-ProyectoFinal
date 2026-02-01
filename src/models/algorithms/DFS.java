@@ -12,20 +12,21 @@ import models.graphs.Grafo;
 import models.graphs.Nodo;
 
 public class DFS {
+    
     public static List<Nodo> buscarRuta(Grafo grafo, Nodo inicio, Nodo destino, List<Nodo> visitadosOrden){
         
         Set<Nodo> visitados = new HashSet<>();
-        Map<Nodo, Nodo> predecesor = new HashMap<>();
+        Map<Nodo, Nodo> precursor = new HashMap<>();
 
-        boolean encontrado = dfsRecursivo(inicio, destino, visitados, predecesor, visitadosOrden);
+        boolean encontrado = dfsRecursivo(inicio, destino, visitados, precursor, visitadosOrden);
 
         if (encontrado) {
-            return reconstruirRuta(predecesor, inicio, destino);
+            return reconstruirRuta(precursor, inicio, destino);
         }
         return new ArrayList<>();
     }
 
-    private static boolean dfsRecursivo(Nodo actual, Nodo destino, Set<Nodo> visitados, Map<Nodo, Nodo> predecesor, List<Nodo> visitadosOrden) {
+    private static boolean dfsRecursivo(Nodo actual, Nodo destino, Set<Nodo> visitados, Map<Nodo, Nodo> precursor, List<Nodo> visitadosOrden) {
         visitados.add(actual);
         visitadosOrden.add(actual);
 
@@ -35,8 +36,8 @@ public class DFS {
 
         for (Nodo vecino : actual.getVecinos()) {
             if (!visitados.contains(vecino)) {
-                predecesor.put(vecino, actual);
-                boolean encontrado = dfsRecursivo(vecino, destino, visitados, predecesor, visitadosOrden);
+                precursor.put(vecino, actual);
+                boolean encontrado = dfsRecursivo(vecino, destino, visitados, precursor, visitadosOrden);
                 if (encontrado) {
                     return true;
                 }

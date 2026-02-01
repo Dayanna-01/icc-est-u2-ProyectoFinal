@@ -10,16 +10,17 @@ import models.graphs.Grafo;
 public class GrafoLoader {
     
     public static Grafo cargarGrafo(String rutaArchivo){
-        Grafo grafo = new Grafo();
+        Grafo graf = new Grafo();
 
-        try(BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))){
+        try(BufferedReader bufer = new BufferedReader(new FileReader(rutaArchivo))){
             String linea;
             boolean leyendoNodos = false;
             boolean leyendoAristas = false;
 
-            while ((linea = br.readLine()) != null) {
+            while ((linea = bufer.readLine()) != null) {
                 linea = linea.trim();
 
+                // Lee cada linea para crear los nodos y las aristas
                 if (linea.equals("NODOS")) {
                     leyendoNodos = true;
                     leyendoAristas = false;
@@ -37,17 +38,17 @@ public class GrafoLoader {
                     int x = Integer.parseInt(partes[1]);
                     int y = Integer.parseInt(partes[2]);
 
-                    grafo.agregarNodo(id, x, y);
+                    graf.agregarNodo(id, x, y);
                 }
                 if (leyendoAristas && linea.isEmpty()) {
                     String[] partes = linea.split(",");
-                    grafo.conectarNodos(partes[0], partes[1]);
+                    graf.conectarNodos(partes[0], partes[1]);
                 }
             }
         } catch (IOException e){
-            System.out.println("Error al cargar el grafo: " + e.getMessage());
+            System.out.println("Error al momnento de cargar el grafo: " + e.getMessage());
         }
-        return grafo;
+        return graf;
     }
 
     public static void guardarGrafo(Grafo grafo, String rutaArchivo){
