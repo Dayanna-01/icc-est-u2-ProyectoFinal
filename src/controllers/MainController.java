@@ -34,8 +34,8 @@ public class MainController {
         List<Nodo> ruta = BFS.buscarRuta(grafo, inicio, destino, visitados);
         long tiempo = TiempoEjecucion.finalizar(inicioTiempo);
 
-        TiempoEjecucion.guardarCSV("BFS", tiempo, "resources-results/tiempos.csv");
-        
+        TiempoEjecucion.guardarCSV("BFS", tiempo, "resources/results/tiempos.csv");
+
         return new ResultadoBusqueda(ruta,visitados,tiempo,modo);
     }
     public Grafo geGrafo(){
