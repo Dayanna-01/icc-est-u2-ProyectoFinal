@@ -6,6 +6,7 @@ public class Main {
 
         // Visualizacion Grafica
         System.out.println("Proyecto Final - Estructura de Datos");
+        System.out.println("Dayanna Chacha - Valeria Guamán");
         System.out.println("Sistema cargado correctamente");
     }
 }
