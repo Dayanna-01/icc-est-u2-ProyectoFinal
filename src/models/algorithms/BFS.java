@@ -17,7 +17,7 @@ public class BFS {
     public static List<Nodo> buscarRuta(Grafo grafo, Nodo inicio, Nodo destino, List<Nodo> visitadosOrden){
         Queue<Nodo> cola = new LinkedList<>();
         Set<Nodo> visitados = new HashSet<>();
-        Map<Nodo, Nodo> predecesor = new HashMap<>();
+        Map<Nodo, Nodo> precursor = new HashMap<>();
 
         cola.add(inicio);
         visitados.add(inicio);
@@ -27,13 +27,13 @@ public class BFS {
             visitadosOrden.add(actual);
 
             if (actual.equals(destino)) {
-                return reconstruirRuta(predecesor, inicio, destino);
+                return reconstruirRuta(precursor, inicio, destino);
             }
 
             for (Nodo vecino : actual.getVecinos()) {
                 if (!visitados.contains(vecino)) {
                     visitados.add(vecino);
-                    predecesor.put(vecino, actual);
+                    precursor.put(vecino, actual);
                     cola.add(vecino);
                 }
             }
