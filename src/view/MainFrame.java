@@ -17,7 +17,7 @@ public class MainFrame extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        add(new MapPanel(controller.geGrafo()), BorderLayout.CENTER);
+        add(new MapPanel(controller.getGrafo()), BorderLayout.CENTER);
         add(new JPanel(), BorderLayout.EAST);
 
         setLocationRelativeTo(null);

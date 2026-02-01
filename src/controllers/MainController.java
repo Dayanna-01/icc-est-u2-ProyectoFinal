@@ -38,7 +38,7 @@ public class MainController {
 
         return new ResultadoBusqueda(ruta,visitados,tiempo,modo);
     }
-    public Grafo geGrafo(){
+    public Grafo getGrafo(){
         return grafo;
     }
 }
