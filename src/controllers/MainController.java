@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.algorithms.BFS;
+import models.algorithms.DFS;
 import models.graphs.Grafo;
 import models.graphs.Nodo;
 import models.persistence.GrafoLoader;
@@ -38,6 +39,20 @@ public class MainController {
 
         return new ResultadoBusqueda(ruta,visitados,tiempo,modo);
     }
+
+    public ResultadoBusqueda ejecutarDFS(String idInicio, String idDestino){
+        Nodo inicio = grafo.getNodo(idInicio);
+        Nodo destino = grafo.getNodo(idDestino);
+
+        List<Nodo> visitados = new ArrayList<>();
+
+        long inicioTiempo = TiempoEjecucion.iniciar();
+        List<Nodo> ruta = DFS.buscarRuta(grafo, inicio, destino, visitados);
+        long tiempo = TiempoEjecucion.finalizar(inicioTiempo);
+
+        return new ResultadoBusqueda(ruta, visitados, tiempo, modo);
+    }
+
     public Grafo getGrafo(){
         return grafo;
     }

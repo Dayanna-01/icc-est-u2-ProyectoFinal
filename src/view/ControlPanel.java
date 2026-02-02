@@ -32,6 +32,15 @@ public class ControlPanel extends JPanel {
 
         JButton btnBFS = new JButton("Ejecutar BFS");
         JButton btnDFS = new JButton("Ejecutar DFS");
+        /// AÑADIR
+        /// 1. mas nodos minimo 30 y si se aumenta y cierro se guarde y de igual manera que cuando elimine y se guarde y se quede con lo que agregó o eliminó
+        /// 2. acomodar los tamaños de los botones
+        /// 3. Las direcciones deben ser unidireccionales y biireccionales
+        /// 4. Añadir el boton de agregar y eliminar nodos
+        /// 5. añadir el boton ver resultados 
+        /// ejemplo
+        /// De nodo A -> J con metodo BFS O DFS recorre en x segundos
+
 
         add(btnBFS);
         add(btnDFS);
@@ -64,5 +73,12 @@ public class ControlPanel extends JPanel {
         mapPanel.mostrarResultado(resultado);
     }
 
+    private void ejecutarDFS(){
+        ResultadoBusqueda resultado = controller.ejecutarDFS(
+                txtInicio.getText().trim(),
+                txtDestino.getText().trim()
+        );  
+        mapPanel.mostrarResultado(resultado);  
+    }
    
 }
