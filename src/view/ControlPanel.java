@@ -42,7 +42,7 @@ public class ControlPanel extends JPanel {
         /// De nodo A -> J con metodo BFS O DFS recorre en x segundos
 
 //holaaa
-//k
+//kkgkg
         add(btnBFS);
         add(btnDFS);
 
