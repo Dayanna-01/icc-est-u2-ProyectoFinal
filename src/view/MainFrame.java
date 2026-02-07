@@ -10,6 +10,7 @@ import controllers.MainController;
 public class MainFrame extends JFrame {
 
     public MainFrame(MainController controller) {
+
         setTitle("Proyecto Final - Estructura de Datos");
         setSize(900, 600);
         setResizable(false);
@@ -22,8 +23,8 @@ public class MainFrame extends JFrame {
         add(mapPanel, BorderLayout.CENTER);
         add(controlPanel, BorderLayout.EAST);
 
-
         setLocationRelativeTo(null);
         setVisible(true);
     }
 }
+

@@ -1,15 +1,8 @@
 package view;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.util.List;
-
-import javax.swing.Timer;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import controllers.ResultadoBusqueda;
 import models.graphs.Grafo;
@@ -18,19 +11,22 @@ import utils.ModoVisualizacion;
 
 public class MapPanel extends JPanel {
 
+    private Image mapa;
     private Grafo grafo;
     private ResultadoBusqueda resultado;
-    private Image mapa;
+
     private int pasoAnimacion = 0;
     private Timer timer;
+
     private Nodo nodoInicio;
     private Nodo nodoFin;
-
-
 
     public MapPanel(Grafo grafo) {
         this.grafo = grafo;
         mapa = new ImageIcon("resources/map/mapa.png").getImage();
+
+
+
     }
 
     public void mostrarResultado(ResultadoBusqueda resultado) {
@@ -62,35 +58,41 @@ public class MapPanel extends JPanel {
         timer.start();
     }
 
-
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+         g.drawImage(mapa, 0, 0, getWidth(), getHeight(), this);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(2.5f));
-        g.drawImage(mapa, 0, 0, getWidth(), getHeight(), this);
-        dibujarAristas(g);
-        dibujarNodos(g);
+
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.drawImage(mapa, 0, 0, getWidth(), getHeight(), this);
+
+        dibujarAristas(g2);
+        dibujarNodos(g2);
 
         if (resultado != null) {
             List<Nodo> lista = resultado.getModo() == ModoVisualizacion.EXPLORACION
                     ? resultado.getVisitados()
                     : resultado.getRuta();
 
-            g.setColor(resultado.getModo() == ModoVisualizacion.EXPLORACION ? Color.ORANGE : Color.RED);
+            g2.setColor(resultado.getModo() == ModoVisualizacion.EXPLORACION
+                    ? Color.ORANGE : Color.RED);
+
+            g2.setStroke(new BasicStroke(3.0f));
+
             int limite = Math.min(pasoAnimacion, lista.size() - 1);
 
             for (int i = 0; i < limite; i++) {
                 Nodo a = lista.get(i);
                 Nodo b = lista.get(i + 1);
-                g.drawLine(a.getX(), a.getY(), b.getX(), b.getY());
+                g2.drawLine(a.getX(), a.getY(), b.getX(), b.getY());
             }
-
         }
     }
 
-    private void dibujarNodos(Graphics g) {
+    private void dibujarNodos(Graphics2D g) {
         for (Nodo n : grafo.getNodos()) {
 
             if (n.equals(nodoInicio)) {
@@ -107,22 +109,22 @@ public class MapPanel extends JPanel {
             }
 
             g.setColor(Color.BLACK);
-            g.drawString(n.getId(), n.getX() + 8, n.getY() - 8);
+            g.drawString(n.getId(), n.getX() + 6, n.getY() - 6);
         }
-}
+    }
 
+    private void dibujarAristas(Graphics2D g) {
+        g.setColor(Color.DARK_GRAY);
+        g.setStroke(new BasicStroke(2.5f));
 
-    private void dibujarAristas(Graphics g) {
-         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.DARK_GRAY);
-        g2.setStroke(new BasicStroke(3.0f));
         for (Nodo n : grafo.getNodos()) {
             for (Nodo.Conexion c : n.getConexiones()) {
                 if (c.bidireccional) {
-                    g2.drawLine(n.getX(), n.getY(), c.destino.getX(), c.destino.getY());
+                    g.drawLine(n.getX(), n.getY(),
+                               c.destino.getX(), c.destino.getY());
                 } else {
-                    dibujarFlecha(g2, n.getX(), n.getY(),
-                                    c.destino.getX(), c.destino.getY());
+                    dibujarFlecha(g, n.getX(), n.getY(),
+                                  c.destino.getX(), c.destino.getY());
                 }
             }
         }
@@ -131,19 +133,16 @@ public class MapPanel extends JPanel {
     private void dibujarFlecha(Graphics g, int x1, int y1, int x2, int y2) {
         g.drawLine(x1, y1, x2, y2);
 
-        double angulo = Math.atan2(y2 - y1, x2 - x1);
-        int flecha = 10;
+        double ang = Math.atan2(y2 - y1, x2 - x1);
+        int t = 10;
 
-        int xA = (int)(x2 - flecha * Math.cos(angulo - Math.PI / 6));
-        int yA = (int)(y2 - flecha * Math.sin(angulo - Math.PI / 6));
+        int xA = (int) (x2 - t * Math.cos(ang - Math.PI / 6));
+        int yA = (int) (y2 - t * Math.sin(ang - Math.PI / 6));
 
-        int xB = (int)(x2 - flecha * Math.cos(angulo + Math.PI / 6));
-        int yB = (int)(y2 - flecha * Math.sin(angulo + Math.PI / 6));
+        int xB = (int) (x2 - t * Math.cos(ang + Math.PI / 6));
+        int yB = (int) (y2 - t * Math.sin(ang + Math.PI / 6));
 
         g.drawLine(x2, y2, xA, yA);
         g.drawLine(x2, y2, xB, yB);
     }
-
-
-
 }
