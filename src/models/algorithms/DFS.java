@@ -34,7 +34,8 @@ public class DFS {
             return true;
         }
 
-        for (Nodo vecino : actual.getVecinos()) {
+        for (Nodo.Conexion c : actual.getConexiones()) {
+            Nodo vecino = c.destino;
             if (!visitados.contains(vecino)) {
                 precursor.put(vecino, actual);
                 boolean encontrado = dfsRecursivo(vecino, destino, visitados, precursor, visitadosOrden);

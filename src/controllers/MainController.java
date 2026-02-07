@@ -14,11 +14,17 @@ public class MainController {
 
     private Grafo grafo;
     private ModoVisualizacion modo;
+    
 
     public MainController(){
         this.grafo = GrafoLoader.cargarGrafo("resources/config/grafo.txt");
         this.modo = ModoVisualizacion.EXPLORACION;
+        generarConexionesAutomaticas();
+        grafo.organizarEnGrilla(600, 100);
+
     }
+
+    
 
     public void setModoVisualizacion(ModoVisualizacion modo){
         this.modo = modo;
@@ -38,6 +44,19 @@ public class MainController {
 
         return new ResultadoBusqueda(ruta,visitados,tiempo,modo);
     }
+
+    private void generarConexionesAutomaticas() {
+        Nodo anterior = null;
+
+        for (Nodo actual : grafo.getNodos()) {
+            if (anterior != null) {
+                grafo.conectar(anterior.getId(), actual.getId(), true);
+            }
+            anterior = actual;
+        }
+    }
+
+    
     public Grafo getGrafo(){
         return grafo;
     }

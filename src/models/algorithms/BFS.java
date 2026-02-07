@@ -30,7 +30,8 @@ public class BFS {
                 return reconstruirRuta(precursor, inicio, destino);
             }
 
-            for (Nodo vecino : actual.getVecinos()) {
+            for (Nodo.Conexion c : actual.getConexiones()) {
+                Nodo vecino = c.destino;
                 if (!visitados.contains(vecino)) {
                     visitados.add(vecino);
                     precursor.put(vecino, actual);

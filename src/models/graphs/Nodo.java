@@ -4,42 +4,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Nodo {
+
     private String id;
     private int x;
     private int y;
-    private List<Nodo> vecinos;
+    private List<Conexion> conexiones;
 
     public Nodo(String id, int x, int y) {
         this.id = id;
         this.x = x;
         this.y = y;
-        this.vecinos = new ArrayList<>();
+        this.conexiones = new ArrayList<>();
     }
 
-    public String getId() {
-        return id;
+    public String getId() { return id; }
+    public int getX() { return x; }
+    public int getY() { return y; }
+
+    public void setX(int x) { this.x = x; }
+    public void setY(int y) { this.y = y; }
+
+
+    public List<Conexion> getConexiones() {
+        return conexiones;
     }
 
-    public int getX() {
-        return x;
+    public void conectar(Nodo destino, boolean bidireccional) {
+        conexiones.add(new Conexion(destino, bidireccional));
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public List<Nodo> getVecinos() {
-        return vecinos;
-    }
-
-    public void agregarVecino(Nodo nodo) {
-        if (!vecinos.contains(nodo)) {
-            vecinos.add(nodo);
-        }
+    public void eliminarConexion(Nodo destino) {
+        conexiones.removeIf(c -> c.destino.equals(destino));
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return id;
+    }
+
+    public static class Conexion {
+        public Nodo destino;
+        public boolean bidireccional;
+
+        public Conexion(Nodo destino, boolean bidireccional) {
+            this.destino = destino;
+            this.bidireccional = bidireccional;
+        }
     }
 }

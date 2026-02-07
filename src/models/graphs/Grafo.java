@@ -5,34 +5,64 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Grafo {
-    private Map<String, Nodo> nodos;
 
-    public Grafo(){
-        nodos = new HashMap<>();
+    private Map<String, Nodo> nodos = new HashMap<>();
+
+    public void agregarNodo(String id, int x, int y) {
+        nodos.putIfAbsent(id, new Nodo(id, x, y));
     }
 
-    public void agregarNodo(String id, int x, int y){
-        if (!nodos.containsKey(id)) {
-            Nodo nodo = new Nodo(id, x, y);
-            nodos.put(id, nodo);
+    public void eliminarNodo(String id) {
+        Nodo eliminado = nodos.remove(id);
+        if (eliminado != null) {
+            for (Nodo n : nodos.values()) {
+                n.eliminarConexion(eliminado);
+            }
         }
     }
 
-    public void conectarNodos(String id1, String id2){
-        Nodo nodo1 = nodos.get(id1);
-        Nodo nodo2 = nodos.get(id2);
+    public void conectar(String a, String b, boolean bidireccional) {
+        Nodo n1 = nodos.get(a);
+        Nodo n2 = nodos.get(b);
 
-        if (nodo1 != null && nodo2 != null) {
-            nodo1.agregarVecino(nodo2);
-            nodo2.agregarVecino(nodo1);
+        if (n1 != null && n2 != null) {
+            n1.conectar(n2, bidireccional);
+            if (bidireccional) {
+                n2.conectar(n1, true);
+            }
         }
     }
 
-    public Nodo getNodo(String id){
+    public void eliminarConexion(String a, String b) {
+        Nodo n1 = nodos.get(a);
+        Nodo n2 = nodos.get(b);
+
+        if (n1 != null && n2 != null) {
+            n1.eliminarConexion(n2);
+            n2.eliminarConexion(n1);
+        }
+    }
+
+    public Nodo getNodo(String id) {
         return nodos.get(id);
     }
 
-    public Collection<Nodo> getNodos(){
+    public Collection<Nodo> getNodos() {
         return nodos.values();
     }
+
+    public void organizarEnGrilla(int ancho, int separacion) {
+    int cols = ancho / separacion;
+    int i = 0;
+
+    for (Nodo n : nodos.values()) {
+        int x = (i % cols) * separacion + 50;
+        int y = (i / cols) * separacion + 50;
+        n.setX(x);
+        n.setY(y);
+        i++;
+    }
+}
+
+
 }
