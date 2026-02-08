@@ -1,8 +1,11 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.*;
+
 
 import controllers.ResultadoBusqueda;
 import models.graphs.Grafo;
@@ -25,7 +28,21 @@ public class MapPanel extends JPanel {
         this.grafo = grafo;
         mapa = new ImageIcon("resources/map/mapa.png").getImage();
 
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                for (Nodo n : grafo.getNodos()) {
+                    int dx = e.getX() - n.getX();
+                    int dy = e.getY() - n.getY();
 
+                    if (Math.sqrt(dx * dx + dy * dy) <= 8) {
+                        n.toggleBloqueado();
+                        repaint();
+                        break;
+                    }
+                }
+            }
+        });
 
     }
 
@@ -104,7 +121,16 @@ public class MapPanel extends JPanel {
                 g.fillOval(n.getX() - 8, n.getY() - 8, 16, 16);
 
             } else {
-                g.setColor(Color.BLUE);
+                if (n.isBloqueado()) {
+                    g.setColor(Color.GRAY);
+                } else if (n.equals(nodoInicio)) {
+                    g.setColor(Color.GREEN);
+                } else if (n.equals(nodoFin)) {
+                    g.setColor(Color.RED);
+                } else {
+                    g.setColor(Color.BLUE);
+                }
+
                 g.fillOval(n.getX() - 6, n.getY() - 6, 12, 12);
             }
 

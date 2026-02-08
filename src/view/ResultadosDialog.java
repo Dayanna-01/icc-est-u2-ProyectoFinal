@@ -8,11 +8,14 @@ public class ResultadosDialog extends JDialog {
 
     private JTable tabla;
     private DefaultTableModel modelo;
+    private int contadorEjecucion = 1;
+
 
     public ResultadosDialog(JFrame parent) {
         super(parent, "Resultados", true);
 
         String[] columnas = {
+            "Ejecucion",
             "Nodo Inicio",
             "Nodo Fin",
             "BFS",
@@ -29,16 +32,21 @@ public class ResultadosDialog extends JDialog {
         setLocationRelativeTo(parent);
     }
 
-    public void agregarResultado(String inicio, String fin,
-                                 boolean bfs, boolean dfs,
-                                 long tiempo) {
-
-        modelo.addRow(new Object[]{
+    public void agregarResultado(
+        String inicio,
+        String fin,
+        String metodo,
+        long tiempo
+    ) {
+        Object[] fila = {
+            contadorEjecucion++,
             inicio,
             fin,
-            bfs ? "✔" : "—",
-            dfs ? "✔" : "—",
+            metodo.equals("BFS") ? "✔" : "—",
+            metodo.equals("DFS") ? "✔" : "—",
             tiempo
-        });
+        };
+        modelo.addRow(fila);
     }
+
 }

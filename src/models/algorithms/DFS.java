@@ -15,6 +15,10 @@ public class DFS {
     
     public static List<Nodo> buscarRuta(Grafo grafo, Nodo inicio, Nodo destino, List<Nodo> visitadosOrden){
         
+         if (inicio.isBloqueado() || destino.isBloqueado()) {
+            return new ArrayList<>();
+        }
+        
         Set<Nodo> visitados = new HashSet<>();
         Map<Nodo, Nodo> precursor = new HashMap<>();
 
@@ -26,7 +30,16 @@ public class DFS {
         return new ArrayList<>();
     }
 
-    private static boolean dfsRecursivo(Nodo actual, Nodo destino, Set<Nodo> visitados, Map<Nodo, Nodo> precursor, List<Nodo> visitadosOrden) {
+    private static boolean dfsRecursivo(
+        Nodo actual,
+        Nodo destino,
+        Set<Nodo> visitados,
+        Map<Nodo, Nodo> precursor,
+        List<Nodo> visitadosOrden
+    )  {
+    
+        if (actual.isBloqueado()) return false;
+
         visitados.add(actual);
         visitadosOrden.add(actual);
 
@@ -36,9 +49,16 @@ public class DFS {
 
         for (Nodo.Conexion c : actual.getConexiones()) {
             Nodo vecino = c.destino;
-            if (!visitados.contains(vecino)) {
+
+            if (!visitados.contains(vecino) && !vecino.isBloqueado()) {
                 precursor.put(vecino, actual);
-                boolean encontrado = dfsRecursivo(vecino, destino, visitados, precursor, visitadosOrden);
+                boolean encontrado = dfsRecursivo(
+                        vecino,
+                        destino,
+                        visitados,
+                        precursor,
+                        visitadosOrden
+                );
                 if (encontrado) {
                     return true;
                 }
@@ -46,6 +66,7 @@ public class DFS {
         }
         return false;
     }
+
 
     private static List<Nodo> reconstruirRuta(Map<Nodo,Nodo> predecesor, Nodo inicio, Nodo destino) {
         

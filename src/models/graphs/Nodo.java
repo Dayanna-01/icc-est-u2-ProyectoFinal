@@ -9,6 +9,8 @@ public class Nodo {
     private int x;
     private int y;
     private List<Conexion> conexiones;
+    private boolean bloqueado = false;
+
 
     public Nodo(String id, int x, int y) {
         this.id = id;
@@ -36,6 +38,19 @@ public class Nodo {
     public void eliminarConexion(Nodo destino) {
         conexiones.removeIf(c -> c.destino.equals(destino));
     }
+
+    public boolean isBloqueado() {
+        return bloqueado;
+    }
+
+    public void setBloqueado(boolean bloqueado) {
+        this.bloqueado = bloqueado;
+    }
+
+    public void toggleBloqueado() {
+        this.bloqueado = !this.bloqueado;
+    }
+
 
     @Override
     public String toString() {

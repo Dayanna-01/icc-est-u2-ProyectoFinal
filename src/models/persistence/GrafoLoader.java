@@ -2,9 +2,11 @@ package models.persistence;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import models.graphs.Grafo;
+import models.graphs.Nodo;
 
 public class GrafoLoader {
 
@@ -33,8 +35,8 @@ public class GrafoLoader {
                 if (aristas && !linea.isEmpty()) {
                     String[] p = linea.split(",");
 
-                    String desde = p[0];
-                    String hasta = p[1];
+                    String origen = p[0];
+                    String destino = p[1];
 
                     boolean bidireccional = true; 
 
@@ -42,8 +44,10 @@ public class GrafoLoader {
                         bidireccional = Boolean.parseBoolean(p[2]);
                     }
 
-                    grafo.conectar(desde, hasta, bidireccional);
+                    grafo.conectar(origen, destino, bidireccional);
                 }
+
+
 
 
             }
@@ -52,5 +56,26 @@ public class GrafoLoader {
             System.out.println("Error al cargar grafo");
         }
         return grafo;
+    }
+
+
+    public static void guardarGrafo(Grafo grafo, String ruta) {
+        try (FileWriter fw = new FileWriter(ruta)) {
+
+            fw.write("NODOS\n");
+            for (Nodo n : grafo.getNodos()) {
+                fw.write(n.getId() + "," + n.getX() + "," + n.getY() + "\n");
+            }
+
+            fw.write("ARISTAS\n");
+            for (Nodo n : grafo.getNodos()) {
+                for (Nodo.Conexion c : n.getConexiones()) {
+                    fw.write(n.getId() + "," + c.destino.getId() + "," + c.bidireccional + "\n");
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -2,15 +2,20 @@ package view;
 
 import controllers.MainController;
 import controllers.ResultadoBusqueda;
+import models.persistence.GrafoLoader;
 import utils.ModoVisualizacion;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ControlPanel extends JPanel {
 
     private MainController controller;
     private MapPanel mapPanel;
+    private ResultadosDialog resultadosDialog;
+
 
     private JTextField txtInicio;
     private JTextField txtDestino;
@@ -18,6 +23,11 @@ public class ControlPanel extends JPanel {
     public ControlPanel(MainController controller, MapPanel mapPanel) {
         this.controller = controller;
         this.mapPanel = mapPanel;
+
+        resultadosDialog = new ResultadosDialog(
+            (JFrame) SwingUtilities.getWindowAncestor(this)
+        );
+
 
         setLayout(new GridLayout(0, 1, 5, 5));
         setPreferredSize(new Dimension(150, 0));
@@ -75,7 +85,39 @@ public class ControlPanel extends JPanel {
         rbRuta.addActionListener(e ->
                 controller.setModoVisualizacion(ModoVisualizacion.RUTA_FINAL));
 
-        btnBFS.addActionListener(e -> ejecutarBFS());
+       btnBFS.addActionListener(e -> {
+            ResultadoBusqueda r = controller.ejercutarBFS(
+                txtInicio.getText().trim(),
+                txtDestino.getText().trim()
+            );
+
+            mapPanel.mostrarResultado(r);
+
+            resultadosDialog.agregarResultado(
+                txtInicio.getText(),
+                txtDestino.getText(),
+                "BFS",
+                r.getTiempo()
+            );
+        });
+
+
+        btnDFS.addActionListener(e -> {
+            ResultadoBusqueda r = controller.ejecutarDFS(
+                txtInicio.getText().trim(),
+                txtDestino.getText().trim()
+            );
+
+            mapPanel.mostrarResultado(r);
+
+            resultadosDialog.agregarResultado(
+                txtInicio.getText(),
+                txtDestino.getText(),
+                "DFS",
+                r.getTiempo()
+            );
+        });
+
 
         btnAgregarNodo.addActionListener(e -> {
             String id = JOptionPane.showInputDialog("ID del nodo:");
@@ -116,25 +158,9 @@ public class ControlPanel extends JPanel {
             mapPanel.repaint();
         });
 
-        btnVerResultados.addActionListener(e -> {
-            ResultadosDialog dialog =
-                new ResultadosDialog((JFrame) SwingUtilities.getWindowAncestor(this));
+        btnVerResultados.addActionListener(e -> resultadosDialog.setVisible(true));
 
-            ResultadoBusqueda r = controller.ejercutarBFS(
-                txtInicio.getText().trim(),
-                txtDestino.getText().trim()
-            );
 
-            dialog.agregarResultado(
-                txtInicio.getText(),
-                txtDestino.getText(),
-                true,
-                false,
-                r.getTiempo()
-            );
-
-            dialog.setVisible(true);
-        });
 
 
        

@@ -15,6 +15,11 @@ import models.graphs.Nodo;
 
 public class BFS {
     public static List<Nodo> buscarRuta(Grafo grafo, Nodo inicio, Nodo destino, List<Nodo> visitadosOrden){
+
+        if (inicio.isBloqueado() || destino.isBloqueado()) {
+            return new ArrayList<>();
+        }
+
         Queue<Nodo> cola = new LinkedList<>();
         Set<Nodo> visitados = new HashSet<>();
         Map<Nodo, Nodo> precursor = new HashMap<>();
@@ -32,6 +37,7 @@ public class BFS {
 
             for (Nodo.Conexion c : actual.getConexiones()) {
                 Nodo vecino = c.destino;
+                if (vecino.isBloqueado()) continue;
                 if (!visitados.contains(vecino)) {
                     visitados.add(vecino);
                     precursor.put(vecino, actual);
