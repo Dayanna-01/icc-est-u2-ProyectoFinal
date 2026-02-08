@@ -32,19 +32,12 @@ public class ControlPanel extends JPanel {
 
         JButton btnBFS = new JButton("Ejecutar BFS");
         JButton btnDFS = new JButton("Ejecutar DFS");
-        /// AÑADIR
-        /// 1. mas nodos minimo 30 y si se aumenta y cierro se guarde y de igual manera que cuando elimine y se guarde y se quede con lo que agregó o eliminó
-        /// 2. acomodar los tamaños de los botones
-        /// 3. Las direcciones deben ser unidireccionales y biireccionales
-        /// 4. Añadir el boton de agregar y eliminar nodos
-        /// 5. añadir el boton ver resultados 
-        /// ejemplo
-        /// De nodo A -> J con metodo BFS O DFS recorre en x segundos
 
-//holaaa
-//kkgkg
         add(btnBFS);
         add(btnDFS);
+
+        btnBFS.addActionListener(e -> ejecutarBFS());
+        btnDFS.addActionListener(e -> ejecutarDFS());
 
         JRadioButton rbExploracion = new JRadioButton("Exploración", true);
         JRadioButton rbRuta = new JRadioButton("Ruta Final");
@@ -68,33 +61,43 @@ public class ControlPanel extends JPanel {
         add(btnEliminarConexion);
         add(btnVerResultados);
 
-
         rbExploracion.addActionListener(e ->
                 controller.setModoVisualizacion(ModoVisualizacion.EXPLORACION));
 
         rbRuta.addActionListener(e ->
                 controller.setModoVisualizacion(ModoVisualizacion.RUTA_FINAL));
 
-        btnBFS.addActionListener(e -> ejecutarBFS());
 
         btnAgregarNodo.addActionListener(e -> {
-            String id = JOptionPane.showInputDialog("ID del nodo:");
-            int x = Integer.parseInt(JOptionPane.showInputDialog("X:"));
-            int y = Integer.parseInt(JOptionPane.showInputDialog("Y:"));
+            try {
+                String id = JOptionPane.showInputDialog("ID del nodo:");
+                if(id == null || id.isEmpty()) return;
 
-            controller.getGrafo().agregarNodo(id, x, y);
-            mapPanel.repaint();
+                int x = Integer.parseInt(JOptionPane.showInputDialog("X:"));
+                int y = Integer.parseInt(JOptionPane.showInputDialog("Y:"));
+
+                controller.agregarNodo(id, x, y);
+                mapPanel.repaint();
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Datos inválidos");
+            }
         });
 
         btnEliminarNodo.addActionListener(e -> {
             String id = JOptionPane.showInputDialog("ID del nodo a eliminar:");
-            controller.getGrafo().eliminarNodo(id);
+            if(id == null || id.isEmpty()) return;
+
+            controller.eliminarNodo(id);
             mapPanel.repaint();
         });
+
 
         btnAgregarConexion.addActionListener(e -> {
             String a = JOptionPane.showInputDialog("Nodo origen:");
             String b = JOptionPane.showInputDialog("Nodo destino:");
+
+            if(a == null || b == null || a.isEmpty() || b.isEmpty()) return;
 
             int tipo = JOptionPane.showConfirmDialog(
                 null,
@@ -104,7 +107,8 @@ public class ControlPanel extends JPanel {
             );
 
             boolean bidireccional = (tipo == JOptionPane.YES_OPTION);
-            controller.getGrafo().conectar(a, b, bidireccional);
+
+            controller.agregarConexion(a, b, bidireccional);
             mapPanel.repaint();
         });
 
@@ -112,9 +116,12 @@ public class ControlPanel extends JPanel {
             String a = JOptionPane.showInputDialog("Nodo origen:");
             String b = JOptionPane.showInputDialog("Nodo destino:");
 
-            controller.getGrafo().eliminarConexion(a, b);
+            if(a == null || b == null || a.isEmpty() || b.isEmpty()) return;
+
+            controller.eliminarConexion(a, b);
             mapPanel.repaint();
         });
+
 
         btnVerResultados.addActionListener(e -> {
             ResultadosDialog dialog =
@@ -135,9 +142,6 @@ public class ControlPanel extends JPanel {
 
             dialog.setVisible(true);
         });
-
-
-       
     }
 
     private void ejecutarBFS() {
@@ -152,8 +156,7 @@ public class ControlPanel extends JPanel {
         ResultadoBusqueda resultado = controller.ejecutarDFS(
                 txtInicio.getText().trim(),
                 txtDestino.getText().trim()
-        );  
-        mapPanel.mostrarResultado(resultado);  
+        );
+        mapPanel.mostrarResultado(resultado);
     }
-   
 }
