@@ -103,9 +103,12 @@ Los tiempos de ejecución quedan registrados en un archivo CSV para su análisis
 
 ## 7. Conclusiones
 
-El proyecto permitió aplicar de manera práctica el uso de grafos y algoritmos de búsqueda. Se comprobó la diferencia real entre BFS y DFS y la importancia de elegir el algoritmo adecuado según el problema.
+- Janelly Dayanna Chacha Vélez
 
-Además, la implementación bajo el patrón MVC permitió organizar correctamente el código, facilitando su mantenimiento y comprensión. La persistencia de datos permitió conservar la información del grafo entre ejecuciones, haciendo el sistema funcional y completo.
+El algoritmo BFS resulta mas adecuado cuando se necesita encontrar una ruta mas corta entre dos nodos, ya que lo hace por niveles, sin embargo el DFS es más rápido en exploración y consume menos memoria pero de igual manera no garantiza el camino optimo.
+- Kelly Valeria Guamán León
+
+Se compararon los algoritmos BFS y DFS en grafos, considerando su recorrido, eficiencia y uso de recursos. BFS explora por niveles y garantiza el camino más corto en grafos no ponderados, pero usa más memoria. DFS profundiza en el grafo, consume menos memoria y no asegura la ruta más corta, en conclusión, BFS es mejor para encontrar el camino óptimo, mientras que DFS resulta útil para exploraciones profundas. La elección depende del objetivo y los recursos disponibles.
 
 ---
 
