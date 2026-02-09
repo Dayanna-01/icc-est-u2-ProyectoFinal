@@ -114,13 +114,18 @@ Se compararon los algoritmos BFS y DFS en grafos, considerando su recorrido, efi
 
 ## 8. Requisitos
 
-* Java JDK 17 o superior
-* Visual Studio Code
-* Java Extension Pack
+* Java 17 y Javax Swing
+* Programación Orientada a Objetos
+* Github
 
 ---
 
-## 9. Ejecución
+## 9. Link video
+* https://www.youtube.com/watch?v=pNWupA1IAqw
+
+---
+
+## 10. Ejecución
 
 Compilar y ejecutar la clase:
 ![alt text](resources/images/Final.png)
